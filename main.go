@@ -3,6 +3,7 @@ package main
 import (
 	"runtime"
 
+	"github.com/chars-mc/opengl-exercises/ui"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -11,21 +12,14 @@ func init() {
 }
 
 func main() {
-	err := glfw.Init()
+	ui, err := ui.NewUI(640, 480, "Testing")
 	if err != nil {
 		panic(err)
 	}
 	defer glfw.Terminate()
 
-	window, err := glfw.CreateWindow(640, 480, "Testing", nil, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	window.MakeContextCurrent()
-
-	for !window.ShouldClose() {
-		window.SwapBuffers()
+	for !ui.Window.ShouldClose() {
+		ui.Window.SwapBuffers()
 		glfw.PollEvents()
 	}
 }
