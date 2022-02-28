@@ -4,7 +4,6 @@ import (
 	"runtime"
 
 	"github.com/chars-mc/opengl-exercises/ui"
-	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 func init() {
@@ -16,10 +15,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer glfw.Terminate()
+	defer ui.Terminate()
 
 	for !ui.Window.ShouldClose() {
-		ui.Window.SwapBuffers()
-		glfw.PollEvents()
+		ui.Draw()
 	}
 }

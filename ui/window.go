@@ -41,3 +41,15 @@ func NewUI(width, height int, title string) (*UI, error) {
 		Program: program,
 	}, nil
 }
+
+func (ui *UI) Draw() {
+	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+	gl.UseProgram(ui.Program)
+
+	glfw.PollEvents()
+	ui.Window.SwapBuffers()
+}
+
+func (ui *UI) Terminate() {
+	glfw.Terminate()
+}
