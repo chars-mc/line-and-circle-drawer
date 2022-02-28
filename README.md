@@ -7,3 +7,6 @@
 ## Libraries
 * [gl](https://github.com/go-gl/gl)
 * [glfw](https://github.com/go-gl/glfw)
+
+## Resources
+[GLFW Documentation](https://www.glfw.org/documentation.html)

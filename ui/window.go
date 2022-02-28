@@ -16,6 +16,12 @@ func NewUI(width, height int, title string) (*UI, error) {
 		return nil, err
 	}
 
+	glfw.WindowHint(glfw.Resizable, glfw.False)
+	glfw.WindowHint(glfw.ContextVersionMajor, 4)
+	glfw.WindowHint(glfw.ContextVersionMinor, 1)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
+
 	window, err := glfw.CreateWindow(width, height, title, nil, nil)
 	if err != nil {
 		return nil, err
