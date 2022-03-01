@@ -1,7 +1,7 @@
 package ui
 
 import (
-	"github.com/go-gl/gl/v4.6-core/gl"
+	"github.com/go-gl/gl/v4.4-compatibility/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -19,7 +19,7 @@ func NewUI(width, height int, title string) (*UI, error) {
 	glfw.WindowHint(glfw.Resizable, glfw.False)
 	glfw.WindowHint(glfw.ContextVersionMajor, 4)
 	glfw.WindowHint(glfw.ContextVersionMinor, 1)
-	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCompatProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
 	window, err := glfw.CreateWindow(width, height, title, nil, nil)
