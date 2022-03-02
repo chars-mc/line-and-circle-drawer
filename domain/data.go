@@ -1,8 +1,8 @@
 package domain
 
 type Coordinate struct {
-	x int
-	y int
+	X int
+	Y int
 }
 
 type Coordinates []Coordinate
