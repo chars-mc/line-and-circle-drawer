@@ -42,12 +42,34 @@ func NewUI(width, height int, title string) (*UI, error) {
 	}, nil
 }
 
-func (ui *UI) Draw() {
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+func (ui *UI) Draw(vao uint32, length int) {
 	gl.UseProgram(ui.Program)
+	gl.ClearColor(0, 0, 0, 0)
+	gl.Clear(gl.COLOR_BUFFER_BIT)
+
+	gl.PointSize(2)
+	gl.BindVertexArray(vao)
+	gl.DrawArrays(gl.POINTS, 0, int32(length/3))
 
 	glfw.PollEvents()
 	ui.Window.SwapBuffers()
+}
+
+// GenerateVao initializes and returns a vertex array object from points
+func (ui *UI) GenerateVao(points []float32) uint32 {
+	var vbo uint32
+	gl.GenBuffers(1, &vbo)
+	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
+	gl.BufferData(gl.ARRAY_BUFFER, 4*len(points), gl.Ptr(points), gl.STATIC_DRAW)
+
+	var vao uint32
+	gl.GenVertexArrays(1, &vao)
+	gl.BindVertexArray(vao)
+	gl.EnableVertexAttribArray(0)
+	gl.BindBuffer(gl.ARRAY_BUFFER, vbo)
+	gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, nil)
+
+	return vao
 }
 
 func (ui *UI) Terminate() {
