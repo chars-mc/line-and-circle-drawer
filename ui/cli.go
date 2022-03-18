@@ -3,19 +3,11 @@ package ui
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"log"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/chars-mc/opengl-exercises/domain"
 	"github.com/chars-mc/opengl-exercises/utils"
-)
-
-var (
-	from = flag.String("from", "2,2", "Start coordinate")
-	to   = flag.String("to", "10,10", "End coordinate")
 )
 
 func init() {
@@ -24,38 +16,59 @@ func init() {
 
 // GetPoints proccess the input from command arguments
 func GetPoints() ([]float32, error) {
-	first := strings.Split(*from, ",")
-	last := strings.Split(*to, ",")
-
-	if len(os.Args) == 1 {
-		log.Println("coordinates not provided, using default values")
+	if len(os.Args) < 2 {
+		return nil, errors.New("you must to provide a command")
 	}
 
-	if len(first) < 2 || len(last) < 2 {
-		return nil, errors.New("Wrong coordinates")
-	}
+	switch os.Args[1] {
+	case "circle":
+		var center domain.Coordinate
 
-	x1, err := strconv.Atoi(first[0])
-	if err != nil {
-		return nil, fmt.Errorf("Error on x1(%v): %v", first[0], err)
-	}
-	y1, err := strconv.Atoi(first[1])
-	if err != nil {
-		return nil, fmt.Errorf("Error on y1(%v): %v", first[1], err)
-	}
-	x2, err := strconv.Atoi(last[0])
-	if err != nil {
-		return nil, fmt.Errorf("Error on x2(%v): %v", last[0], err)
-	}
-	y2, err := strconv.Atoi(last[1])
-	if err != nil {
-		return nil, fmt.Errorf("Error on x2(%v): %v", last[1], err)
-	}
+		circleCmd := flag.NewFlagSet("circle", flag.ExitOnError)
+		radius := circleCmd.Int("radius", 10, "the radius of the circumference")
+		circleCmd.Var(&center, "center", "the center of the circumference")
 
-	a := domain.Coordinate{X: x1, Y: y1}
-	b := domain.Coordinate{X: x2, Y: y2}
+		err := circleCmd.Parse(os.Args[2:])
+		if err != nil {
+			return nil, err
+		}
 
-	coordinates := domain.NewStraightLine(a, b).GetCoordinates()
+		if center == (domain.Coordinate{}) {
+			center.X, center.Y = 0, 0
+			log.Printf("center was not provided, using default value (%d, %d)",
+				center.X, center.Y,
+			)
+		}
 
-	return utils.GetPointsFromCoordinates(coordinates), nil
+		c := domain.NewCircle(center, *radius)
+		l := domain.NewStraightLine(c.Center, domain.Coordinate{c.Radius * 2, c.Radius * -2})
+		coordinates := append(c.GetCoordinates(), l.GetCoordinates()...)
+
+		return utils.GetPointsFromCoordinates(coordinates), nil
+	case "line":
+		var from, to domain.Coordinate
+
+		lineCmd := flag.NewFlagSet("line", flag.ExitOnError)
+		lineCmd.Var(&from, "from", "the start coordinate")
+		lineCmd.Var(&to, "to", "the end coordinate")
+
+		err := lineCmd.Parse(os.Args[2:])
+		if err != nil {
+			return nil, err
+		}
+
+		if from == (domain.Coordinate{}) || to == (domain.Coordinate{}) {
+			from.X, from.Y = -10, -10
+			to.X, to.Y = 10, 10
+			log.Printf(
+				"from or to coordinates are empty, using default values (%v, %d) and (%d, %d)",
+				from.X, from.Y, to.X, to.Y,
+			)
+		}
+
+		coordinates := domain.NewStraightLine(from, to).GetCoordinates()
+		return utils.GetPointsFromCoordinates(coordinates), nil
+	default:
+		return nil, errors.New("wrong command")
+	}
 }
