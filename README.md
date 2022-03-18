@@ -18,11 +18,22 @@
 [GLFW Documentation](https://www.glfw.org/documentation.html)
 
 ## Usage
+### Line
 ```
-$ ./opengl-exercises.exe -h
-Usage of opengl-exercises.exe:
-  -from string
-        Start coordinate (default "2,2")
-  -to string
-        End coordinate (default "10,10")
+λ opengl-exercises.exe line -h
+Usage of line:
+  -from value
+        the start coordinate
+  -to value
+        the end coordinate  
+```
+
+### Circle
+```
+λ opengl-exercises.exe circle -h 
+Usage of circle:
+  -center value
+        the center of the circumference
+  -radius int
+        the radius of the circumference (default 10)
 ```
