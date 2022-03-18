@@ -2,13 +2,13 @@ package domain
 
 type Circle struct {
 	Center Coordinate
-	Radio  int
+	Radius int
 }
 
-func NewCircle(center Coordinate, radio int) *Circle {
+func NewCircle(center Coordinate, radius int) *Circle {
 	return &Circle{
 		Center: center,
-		Radio:  radio,
+		Radius: radius,
 	}
 }
 
@@ -42,8 +42,8 @@ func (c *Circle) GetCoordinates() Coordinates {
 func (c *Circle) getInitialCoordinates() Coordinates {
 	var coordinates Coordinates
 
-	point := Coordinate{0, c.Radio} // first coordinate
-	p := 5/4 - c.Radio              // decision parameter
+	point := Coordinate{0, c.Radius} // first coordinate
+	p := 5/4 - c.Radius              // decision parameter
 
 	for point.X <= point.Y {
 		coordinates = append(coordinates, Coordinate{
