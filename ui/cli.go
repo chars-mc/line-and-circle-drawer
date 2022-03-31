@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/chars-mc/opengl-exercises/domain"
-	"github.com/chars-mc/opengl-exercises/utils"
 )
 
 func init() {
@@ -15,7 +14,7 @@ func init() {
 }
 
 // GetPoints proccess the input from command arguments
-func GetPoints() ([]float32, error) {
+func GetPoints() (domain.Coordinates, error) {
 	if len(os.Args) < 2 {
 		return nil, errors.New("you must to provide a command")
 	}
@@ -44,7 +43,7 @@ func GetPoints() ([]float32, error) {
 		l := domain.NewStraightLine(c.Center, domain.Coordinate{c.Radius * 2, c.Radius * -2})
 		coordinates := append(c.GetCoordinates(), l.GetCoordinates()...)
 
-		return utils.GetPointsFromCoordinates(coordinates), nil
+		return coordinates, nil
 	case "line":
 		var from, to domain.Coordinate
 
@@ -67,7 +66,7 @@ func GetPoints() ([]float32, error) {
 		}
 
 		coordinates := domain.NewStraightLine(from, to).GetCoordinates()
-		return utils.GetPointsFromCoordinates(coordinates), nil
+		return coordinates, nil
 	case "polygon":
 		var polygon domain.Polygon
 
@@ -82,7 +81,7 @@ func GetPoints() ([]float32, error) {
 			return nil, errors.New("you must to provide the coordinates")
 		}
 
-		return utils.GetPointsFromCoordinates(polygon.GetCoordinates()), nil
+		return polygon.GetCoordinates(), nil
 	default:
 		return nil, errors.New("wrong command")
 	}

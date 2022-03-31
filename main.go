@@ -12,20 +12,18 @@ func init() {
 }
 
 func main() {
-	points, err := ui.GetPoints()
+	coordinates, err := ui.GetPoints()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	ui, err := ui.NewUI(640, 480, "Testing")
+	ui, err := ui.NewUI(640, 480, "Testing", coordinates)
 	if err != nil {
 		panic(err)
 	}
 	defer ui.Terminate()
 
-	vao := ui.GenerateVao(points)
-
 	for !ui.Window.ShouldClose() {
-		ui.Draw(vao, len(points))
+		ui.Draw()
 	}
 }
