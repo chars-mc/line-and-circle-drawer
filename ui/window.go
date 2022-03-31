@@ -79,6 +79,64 @@ func (ui *UI) generateVao() uint32 {
 }
 
 func (ui *UI) handleKeyboard(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+	// TODO: move transformacion logic to domain layer
+	// translation
+	if key == glfw.KeyW && action == glfw.Press {
+		for i := range ui.coordinates {
+			ui.coordinates[i].Y++
+		}
+	} else if key == glfw.KeyS && action == glfw.Press {
+		for i := range ui.coordinates {
+			ui.coordinates[i].Y--
+		}
+	}
+	if key == glfw.KeyA && action == glfw.Press {
+		for i := range ui.coordinates {
+			ui.coordinates[i].X--
+		}
+	} else if key == glfw.KeyD && action == glfw.Press {
+		for i := range ui.coordinates {
+			ui.coordinates[i].X++
+		}
+	}
+
+	// rotation
+	if key == glfw.KeyR && action == glfw.Press {
+		for i := range ui.coordinates {
+			ui.coordinates[i].X, ui.coordinates[i].Y = ui.coordinates[i].Y, -ui.coordinates[i].X
+		}
+	}
+
+	// scalation
+	// FIXME: fix coordinate changes
+	if key == glfw.KeyUp && action == glfw.Press {
+		for i := range ui.coordinates {
+			if ui.coordinates[i].X > 0 {
+				ui.coordinates[i].X++
+			} else {
+				ui.coordinates[i].X--
+			}
+			if ui.coordinates[i].Y > 0 {
+				ui.coordinates[i].Y++
+			} else {
+				ui.coordinates[i].Y--
+			}
+		}
+	} else if key == glfw.KeyDown && action == glfw.Press {
+		for i := range ui.coordinates {
+			if ui.coordinates[i].X > 0 {
+				ui.coordinates[i].X--
+			} else {
+				ui.coordinates[i].X++
+			}
+			if ui.coordinates[i].Y > 0 {
+				ui.coordinates[i].Y--
+			} else {
+				ui.coordinates[i].Y++
+			}
+		}
+	}
+
 	ui.points = utils.GetPointsFromCoordinates(ui.coordinates)
 	ui.vao = ui.generateVao()
 
