@@ -68,6 +68,21 @@ func GetPoints() ([]float32, error) {
 
 		coordinates := domain.NewStraightLine(from, to).GetCoordinates()
 		return utils.GetPointsFromCoordinates(coordinates), nil
+	case "polygon":
+		var polygon domain.Polygon
+
+		polygonCmd := flag.NewFlagSet("polygon", flag.ExitOnError)
+		polygonCmd.Var(&polygon, "coordinates", "the coordinates separated by a ';'")
+
+		err := polygonCmd.Parse(os.Args[2:])
+		if err != nil {
+			return nil, err
+		}
+		if len(os.Args) < 3 {
+			return nil, errors.New("you must to provide the coordinates")
+		}
+
+		return utils.GetPointsFromCoordinates(polygon.GetCoordinates()), nil
 	default:
 		return nil, errors.New("wrong command")
 	}
