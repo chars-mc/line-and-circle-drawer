@@ -1,4 +1,6 @@
-# OpenGL exercises
+# Line and circle drawer
+
+Implementation of algorithms for drawing lines and circles with OpenGL.
 
 ## Requirements
 * [gcc](https://www.msys2.org/)
