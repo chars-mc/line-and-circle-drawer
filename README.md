@@ -2,6 +2,8 @@
 
 Implementation of algorithms for drawing lines and circles with OpenGL.
 
+![Screenshot](screenshots/line_circle_drawer.png)
+
 ## Requirements
 * [gcc](https://www.msys2.org/)
 * [Go](https://go.dev/)
